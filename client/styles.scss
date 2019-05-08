@@ -1,0 +1,172 @@
+$font-stack: 'Helvetica Neue', 'Roboto', sans-serif;
+$primary-color: #222425;
+$primary-background: #eee;
+$primary-background-accent: darken($primary-background, 5%);
+$primary-foreground: #fff;
+$primary-foreground-accent: darken($primary-foreground, 3%);
+$primary-color-faded: mix($primary-color, $primary-background, 60);
+// $primary-color: rgb(197, 197, 197);
+// $primary-background: #222;
+// $primary-background-accent: darken($primary-background, 5%);
+// $primary-foreground: #000;
+// $primary-foreground-accent: brighten($primary-foreground, 10%);
+// $primary-color-faded: mix($primary-color, $primary-background, 60);
+
+* {
+	-webkit-font-smoothing: antialised;
+}
+
+body {
+	background: $primary-background;
+	font: 85%/135% $font-stack;
+	color: $primary-color;
+}
+
+h1, h2, h3 {
+	font-weight: 200;
+}
+
+header {
+	display: flex;
+	h1, #SearchBar {
+		display: flex;
+		margin-bottom: 1em;
+	}
+	h1 {
+		padding: 0 .5em;
+		a {
+			color: $primary-color;
+			text-decoration: none;
+		}
+	}
+
+	#SearchBar {
+		align-items: flex-end;
+		flex-grow: 1;
+		justify-content: flex-end;
+
+		input[type=text], button {
+			background: $primary-background-accent;
+			color: $primary-color;
+			font: 110% $font-stack;
+			height: 40px;
+			padding: 4px 8px;
+			border: 0;
+		}
+		input[type=text] {
+			opacity: 0.7;
+			flex-grow: 1;
+			border-top-left-radius: 10px;
+			border-bottom-left-radius: 10px;
+		}
+		input[type=text]:focus {
+			opacity: 1;
+			outline: 0;
+		}
+		button {
+			font-size: 125%;
+			background: $primary-background-accent;
+			color: $primary-color;
+			border-top-right-radius: 10px;
+			border-bottom-right-radius: 10px;
+			svg {
+				fill: $primary-color;
+			}
+		}
+		button:focus {
+			outline: 0;
+		}
+	}
+}
+
+#container {
+	background: $primary-foreground;
+
+	#EmailIndex {
+		#actionBar {
+			color: $primary-color-faded;
+			background: $primary-background;
+			display: flex;
+			flex-direction: row;
+			justify-content: flex-end;
+			align-items: center;
+			padding: .5em 0;
+			button {
+				border: 0;
+				background: $primary-background;
+				svg {
+					fill: $primary-color;
+				}
+				&[disabled] svg {
+					fill: $primary-color-faded;
+				}
+			}
+		}
+
+		.EmailSnippet a {
+			color: inherit;
+			text-decoration: none;
+			border-bottom: 1px solid $primary-background;
+			display: flex;
+			flex-direction: row;
+			padding: .5em 1em;
+
+			&:hover {
+				background: $primary-foreground-accent;
+			}
+
+			.primaryContainer {
+				flex: 1;
+			}
+
+			.sender {
+				font-weight: bold;
+			}
+
+			.body {
+				// @todo fix overflow hidden
+				color: $primary-color-faded;
+				position: relative;
+				height: 1.5em;
+				> div {
+					top: 0;
+					position: absolute;
+					height: 1.5em;
+					overflow: hidden;
+				}
+			}
+
+			.date {
+				color: $primary-color-faded;
+				display: flex;
+				justify-content: flex-end;
+				min-width: 3.5em;
+			}
+		}
+	}
+
+	#EmailView {
+		#metaData {
+			border-bottom: 1px solid $primary-background;
+			padding: .5em;
+			display: flex;
+			flex-direction: row;
+			justify-content: space-between;
+			align-items: center;
+			#senders, #recipients {
+				color: $primary-color-faded;
+				strong {
+					color: $primary-color;
+				}
+			}
+		}
+		#emailContents {
+			padding: .5em 1em;
+		}
+	}
+
+	#EmailFrame {
+		border: 0;
+		width: 100%;
+	}
+}
