@@ -9,7 +9,6 @@ const sleep = (ms = 10) => new Promise((accept, reject) => {
 
 const waitForOpen = async () => {
 	while (ws.readyState === WebSocket.CONNECTING) {
-		console.log('sleep');
 		await sleep();
 	}
 };

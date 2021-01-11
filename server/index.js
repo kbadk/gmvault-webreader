@@ -1,5 +1,5 @@
 const { join } = require('path');
-const {readFileSync } = require('fs');
+const { readFileSync } = require('fs');
 const express = require('express');
 const expressWs = require('express-ws');
 const websocketHandler = require('./websocket-handler');

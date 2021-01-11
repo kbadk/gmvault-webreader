@@ -5,8 +5,6 @@ const emailSearch = cacher(require('./email/email-search'), { ttl: 30 });
 const emailGet = cacher(require('./email/email-get'));
 const config = require('../config.js');
 
-//const MAIL_ROOT = '/Users/kba/Gmail/db';
-
 module.exports = (ws, req) => {
 	ws.on('message', async (msg) => {
 		try {

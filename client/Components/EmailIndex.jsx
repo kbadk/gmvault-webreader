@@ -52,7 +52,6 @@ export default class EmailIndex extends React.Component {
 
 		let query = params.query || undefined;
 		if (query) {
-			console.log(this.state.query, query);
 			if (this.state.query !== query) {
 				this.searchEmails(query);
 				this.setState({ query, page: -1 });

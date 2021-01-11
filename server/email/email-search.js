@@ -29,7 +29,8 @@ async function search(rootPath, query) {
 		.join('')
 		.split('\n')
 		.map(email => email.trim())
-		.filter(email => email.length > 0);
+		.filter(email => email.length > 0)
+		.sort((a, b) => b.localeCompare(a));
 
 	return await emailPreviewer(rootPath, emails);
 }
