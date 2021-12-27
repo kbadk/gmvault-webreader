@@ -21,7 +21,6 @@ Nothing will be extracted (except in memory) for searching and navigation, rende
 #### Email view
 ![Screenshot of email](screenshot-email.png "Screenshot of email")
 
-
 ## Usage
 
 - Download (and extract) or clone this repository.
@@ -34,6 +33,7 @@ Or if you insist on running it bare metal:
 - Install Node 12 or later.
 - Download (and extract) or clone this repository.
 - Install dependencies: `npm install --production`.
+- Build JavaScript bundle: `npm run build`
 - Set `mailRoot` to point to your Gmvault backup directory in `config.js`.
 - Start the thing: `npm start`.
 - Point your browser at http://localhost:6114/.
