@@ -7,4 +7,4 @@ RUN npm build
 
 EXPOSE 6114
 
-CMD npm start
+CMD exec npm start
