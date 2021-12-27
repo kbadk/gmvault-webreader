@@ -6,6 +6,7 @@
     "build": "webpack",
     "start": "node server/index.js",
     "watch": "webpack -w --mode development",
+    "dev": "MAIL_ROOT=./db npm run start",
     "lint": "eslint ."
   },
   "keywords": [],
