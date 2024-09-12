@@ -5,11 +5,20 @@ import SearchBar from './SearchBar';
 import EmailIndex from './EmailIndex';
 import EmailView from './EmailView';
 import InvalidPage from './InvalidPage';
+import Spinner from './Spinner';
 
 // webpack updates basename in public/index.html during `npm build`.
 const basename = document.querySelector('html > head > base[href]').getAttribute('href');
 
 export default class App extends React.Component {
+	state = {
+		isLoading: false
+	}
+
+	setLoading = (isLoading) => {
+		this.setState({ isLoading });
+	}
+
 	render() {
 		return (<Router basename={basename}>
 			<header>
@@ -17,11 +26,23 @@ export default class App extends React.Component {
 				<SearchBar></SearchBar>
 			</header>
 			<div id="container">
+				<Spinner isLoading={this.state.isLoading}></Spinner>
 				<Switch>
-					<Route exact path="/" component={EmailIndex} />
-					<Route exact path="/page/:num" component={EmailIndex} />
-					<Route exact path="/search/:query" component={EmailIndex} />
-					<Route exact path="/view/:path/:name" component={EmailView} />
+					<Route
+						exact path="/"
+						render={(props) => <EmailIndex {...props} setLoading={this.setLoading} />}
+					/>
+					<Route
+						exact path="/page/:num"
+						render={(props) => <EmailIndex {...props} setLoading={this.setLoading} />}
+					/>
+					<Route
+						exact path="/search/:query"
+						render={(props) => <EmailIndex {...props} setLoading={this.setLoading} />}
+					/>
+					<Route exact path="/view/:path/:name"
+						render={(props) => <EmailView {...props} setLoading={this.setLoading} />}
+					/>
 					<Route component={InvalidPage} />
 				</Switch>
 			</div>

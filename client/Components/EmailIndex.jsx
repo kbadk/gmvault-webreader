@@ -67,21 +67,28 @@ export default class EmailIndex extends React.Component {
 	}
 
 	async getEmailCount() {
+		const count = await EmailDatabase.count();
 		this.setState({
-			emailCount: await EmailDatabase.count()
+			emailCount: count
 		});
 	}
 
 	async getEmails(limit, offset) {
+		this.props.setLoading(true);
+		const emails = await EmailDatabase.browse(limit, offset);
 		this.setState({
-			emails: await EmailDatabase.browse(limit, offset),
+			emails: emails
 		});
+		this.props.setLoading(false);
 	}
 
 	async searchEmails(query) {
+		this.props.setLoading(true);
+		const emails = await EmailDatabase.search(query);
 		this.setState({
-			emails: await EmailDatabase.search(query),
+			emails: emails
 		});
+		this.props.setLoading(false);
 	}
 
 	setPage(page) {

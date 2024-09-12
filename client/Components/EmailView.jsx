@@ -36,9 +36,17 @@ export default class EmailView extends React.Component {
 	}
 
 	async getEmail(id) {
+		// Getting an email is usually very fast. To avoid a spinner flashing,
+		// we wait for 0.5s, and only then add the spinner if the email
+		// hasn't loaded.
+		const timeout = setTimeout(function(setLoading) {
+			setLoading(true); }, 500, this.props.setLoading);
+		const email = await EmailDatabase.get(id);
 		this.setState({
-			email: await EmailDatabase.get(id)
+			email: email
 		});
+		clearTimeout(timeout);
+		this.props.setLoading(false);
 	}
 
 	emailsToString(emails) {
