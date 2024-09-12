@@ -16,8 +16,14 @@ export default class EmailView extends React.Component {
 		return (<div id="EmailView">
 			<div id="metaData">
 				<div>
-					<div id="senders">{this.emailsToString(email.from)}</div>
-					<div id="recipients">to: {this.emailsToString(email.to)}</div>
+					<button
+						onClick={() => history.back()}>
+						{this.backIcon}
+					</button>
+					<div id="addresses">
+						<div id="senders">{this.emailsToString(email.from)}</div>
+						<div id="recipients">to: {this.emailsToString(email.to)}</div>
+					</div>
 				</div>
 				<div>
 					<div id="date">{formatLongDate(email.date)}</div>
@@ -40,12 +46,14 @@ export default class EmailView extends React.Component {
 		// we wait for 0.5s, and only then add the spinner if the email
 		// hasn't loaded.
 		const timeout = setTimeout(function(setLoading) {
-			setLoading(true); }, 500, this.props.setLoading);
+			setLoading(true);
+		}, 500, this.props.setLoading);
 		const email = await EmailDatabase.get(id);
+		clearTimeout(timeout);
+
 		this.setState({
 			email: email
 		});
-		clearTimeout(timeout);
 		this.props.setLoading(false);
 	}
 
@@ -57,4 +65,9 @@ export default class EmailView extends React.Component {
 		));
 	}
 
+	// Courtesy of Material Design Icons: https://material.io/tools/icons/?icon=search&style=baseline
+	backIcon = (<svg xmlns="http://www.w3.org/2000/svg" height="24" width="24" viewBox="0 0 24 24">
+		<path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" />
+		<path d="M0 0h24v24H0z" fill="none" />
+	</svg>);
 }
