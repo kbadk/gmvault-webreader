@@ -16,11 +16,20 @@ export default class EmailFrame extends React.Component {
 		this.doc.write(html);
 		this.doc.close();
 		this.doc.head.insertAdjacentHTML('afterbegin',
-			'<style>body { background: #fff; font-family: sans-serif; }</style>');
+			`<style>body {
+				background: #fff;
+				font-family: sans-serif;
+			}
+		</style>`);
 
 		const resizeObserver = new ResizeObserver((objs) =>
-			objs.forEach(() => this.iframe.style.height = this.doc.body.scrollHeight + 'px'));
+			objs.forEach(() => {
+				this.iframe.style.height = this.doc.body.scrollHeight + 'px';
+			}));
 		resizeObserver.observe(this.doc.body);
+
+		// #EmailFrame initiallty has `opacity: 0` defined in the SCSS.
+		setTimeout(() => this.iframe.style.opacity = 1, 100);
 	}
 
 	/**

@@ -186,6 +186,10 @@ header {
 	}
 
 	#EmailFrame {
+		// We initially set opacity to 0 and then change opacity to 1 a little later.
+		// This gives dark mode extensions (like Dark Reader) time to apply styles
+		// before the element becomes visible, preventing a "white flash".
+		opacity: 0;
 		border: 0;
 		width: 100%;
 	}
