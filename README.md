@@ -38,7 +38,7 @@ The screenshots show the fictional test mailbox described under [Development](#d
 
 Or if you insist on running it bare metal:
 
-- Install Node 24 or later.
+- Install Node 22 or later.
 - Download (and extract) or clone this repository.
 - Install dependencies: `npm ci`.
 - Build JavaScript bundle: `npm run build`
