@@ -35,21 +35,31 @@ export default class EmailFrame extends React.Component {
 
 		// Emails sized in `vh` can still grow the frame on every resize, so stop following them if they do.
 		const resizes = [];
-		const resizeObserver = new ResizeObserver(() => {
+		this.resizeObserver = new ResizeObserver(() => {
 			const now = Date.now();
 			resizes.push(now);
 			while (resizes[0] < now - 1000) {
 				resizes.shift();
 			}
 			if (resizes.length > 30) {
-				return resizeObserver.disconnect();
+				return this.resizeObserver.disconnect();
 			}
-			this.iframe.style.height = this.doc.body.scrollHeight + 'px';
+			if (this.iframe) {
+				this.iframe.style.height = this.doc.body.scrollHeight + 'px';
+			}
 		});
-		resizeObserver.observe(this.doc.body);
+		this.resizeObserver.observe(this.doc.body);
 
 		// #EmailFrame initiallty has `opacity: 0` defined in the SCSS.
-		setTimeout(() => this.iframe.style.opacity = 1, 100);
+		setTimeout(() => {
+			if (this.iframe) this.iframe.style.opacity = 1;
+		}, 100);
+	}
+
+	componentWillUnmount() {
+		if (this.resizeObserver) {
+			this.resizeObserver.disconnect();
+		}
 	}
 
 	/**
