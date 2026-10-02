@@ -13,11 +13,11 @@ const basename = document.querySelector('html > head > base[href]').getAttribute
 export default class App extends React.Component {
 	state = {
 		isLoading: false
-	}
+	};
 
 	setLoading = (isLoading) => {
 		this.setState({ isLoading });
-	}
+	};
 
 	render() {
 		return (<Router basename={basename}>

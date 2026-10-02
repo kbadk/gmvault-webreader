@@ -7,6 +7,11 @@ export default class EmailView extends React.Component {
 	render() {
 		const email = this.state && this.state.email;
 
+		if (this.state && this.state.error) {
+			document.title = 'Gmvault: Email not found';
+			return (<div id="EmailView"><p id="error">This email couldn't be loaded.</p></div>);
+		}
+
 		if (!email) {
 			return (<div id="EmailView"></div>);
 		}
@@ -48,13 +53,14 @@ export default class EmailView extends React.Component {
 		const timeout = setTimeout(function(setLoading) {
 			setLoading(true);
 		}, 500, this.props.setLoading);
-		const email = await EmailDatabase.get(id);
-		clearTimeout(timeout);
-
-		this.setState({
-			email: email
-		});
-		this.props.setLoading(false);
+		try {
+			this.setState({ email: await EmailDatabase.get(id) });
+		} catch (e) {
+			this.setState({ error: true });
+		} finally {
+			clearTimeout(timeout);
+			this.props.setLoading(false);
+		}
 	}
 
 	emailsToString(emails) {

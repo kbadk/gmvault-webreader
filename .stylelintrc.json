@@ -1,7 +1,3 @@
 {
-  "extends": "stylelint-config-recommended",
-  "rules": {
-    "indentation": "tab",
-    "string-quotes": "single"
-  }
+  "extends": "stylelint-config-recommended-scss"
 }

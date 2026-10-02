@@ -1,10 +1,11 @@
 $font-stack: 'Helvetica Neue', 'Roboto', sans-serif;
 $primary-color: #222425;
 $primary-background: #eee;
-$primary-background-accent: darken($primary-background, 5%);
+@use "sass:color";
+$primary-background-accent: color.adjust($primary-background, $lightness: -5%);
 $primary-foreground: #fff;
-$primary-foreground-accent: darken($primary-foreground, 3%);
-$primary-color-faded: mix($primary-color, $primary-background, 60);
+$primary-foreground-accent: color.adjust($primary-foreground, $lightness: -3%);
+$primary-color-faded: color.mix($primary-color, $primary-background, 60%);
 // $primary-color: rgb(197, 197, 197);
 // $primary-background: #222;
 // $primary-background-accent: darken($primary-background, 5%);
@@ -18,7 +19,7 @@ $primary-color-faded: mix($primary-color, $primary-background, 60);
 
 body {
 	background: $primary-background;
-	font: 85%/135% $font-stack;
+	font: 85% / 135% $font-stack;
 	color: $primary-color;
 }
 
@@ -182,6 +183,10 @@ header {
 		}
 		#emailContents {
 			padding: .5em 1em;
+		}
+		#error {
+			padding: 1em;
+			color: $primary-color-faded;
 		}
 	}
 

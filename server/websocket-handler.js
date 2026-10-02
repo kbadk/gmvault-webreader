@@ -6,24 +6,37 @@ const emailGet = cacher(require('./email/email-get'));
 const config = require('../config.js');
 
 module.exports = (ws, req) => {
-	ws.on('message', async (msg) => {
+	const send = (message) => {
 		try {
-			msg = JSON.parse(msg);
+			ws.send(JSON.stringify(message));
 		} catch (e) {
-			ws.send(JSON.stringify({ error: 'Invalid JSON' }));
+			console.log('Closed websocket:', e.toString());
+			ws.close();
+		}
+	};
+
+	ws.on('message', (data) => {
+		let msg;
+		try {
+			msg = JSON.parse(data);
+		} catch (e) {
+			return send({ error: 'Invalid JSON' });
+		}
+		// E.g. `null`, which would otherwise also fail in the error handler below.
+		if (!msg || typeof msg !== 'object') {
+			return send({ error: 'Invalid request' });
 		}
 
-		const reply = (result) => {
-			try {
-				ws.send(JSON.stringify({
-					payload: result,
-					token: msg.token
-				}));
-			} catch (e) {
-				console.log('Closed websocket:', e.toString());
-				ws.close();
-			}
-		};
+		// Unhandled rejections make Node exit, so a single failed request (e.g. for an email that doesn't exist)
+		// would otherwise take down the server.
+		handleMessage(msg).catch((error) => {
+			console.log('Request failed:', error.toString());
+			send({ error: 'Request failed', token: msg.token });
+		});
+	});
+
+	async function handleMessage(msg) {
+		const reply = (result) => send({ payload: result, token: msg.token });
 
 		const payload = msg.payload;
 
@@ -56,5 +69,5 @@ module.exports = (ws, req) => {
 				reply({ error: 'Invalid request' });
 			}
 		}
-	});
+	}
 };

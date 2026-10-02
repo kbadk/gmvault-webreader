@@ -1,8 +1,4 @@
-FROM node:14-slim
-
-RUN apt-get update && apt-get install -y \
-	python g++ make \
-	&& rm -rf /var/lib/apt/lists/*
+FROM node:24-slim
 
 WORKDIR /app
 

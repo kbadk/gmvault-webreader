@@ -13,14 +13,15 @@ const waitForOpen = async () => {
 	}
 };
 
-const send = (msg) => new Promise(async (accept, reject) => {
+const send = async (msg) => {
 	await waitForOpen();
 	const token = Math.random().toString(36).substring(2);
-	tokens.set(token, [accept, reject]);
-	ws.send(JSON.stringify({
-		payload: msg, token
-	}));
-});
+	const promise = new Promise((accept, reject) => {
+		tokens.set(token, [accept, reject]);
+	});
+	ws.send(JSON.stringify({ payload: msg, token }));
+	return promise;
+};
 
 ws.onmessage = (msg) => {
 	msg = JSON.parse(msg.data);

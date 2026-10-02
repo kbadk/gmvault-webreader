@@ -7,7 +7,7 @@ import EmailDatabase from '../emails';
 export default class EmailIndex extends React.Component {
 	state = {
 		emailCount: '?'
-	}
+	};
 	PAGE_SIZE = 100;
 
 	constructor(...args) {

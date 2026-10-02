@@ -1,7 +1,9 @@
+const path = require('path');
+const ESLintPlugin = require('eslint-webpack-plugin');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
 
 module.exports = {
-	entry: ['babel-polyfill', './client/index.jsx'],
+	entry: './client/index.jsx',
 	module: {
 		rules: [
 			{
@@ -9,7 +11,6 @@ module.exports = {
 				exclude: /node_modules/,
 				use: [
 					{ loader: 'babel-loader' },
-					{ loader: 'eslint-loader', options: { fix: true } }
 				]
 			},
 			{
@@ -23,16 +24,19 @@ module.exports = {
 		extensions: ['.js', '.jsx', '.scss']
 	},
 	output: {
-		path: __dirname + '/public',
+		path: path.resolve(__dirname, 'public'),
 		publicPath: '/public',
 		filename: 'bundle.js'
 	},
 	devtool: 'source-map',
 	plugins: [
+		new ESLintPlugin({
+			extensions: ['js', 'jsx'],
+			fix: true,
+		}),
 		new StyleLintPlugin({
 			configFile: '.stylelintrc.json',
 			files: 'client/*.scss',
-			syntax: 'scss',
 			fix: true
 		}),
 	]
