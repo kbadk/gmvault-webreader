@@ -4,3 +4,4 @@ public/bundle.js.map
 db/
 scripts/
 test/
+screenshot-*.png
