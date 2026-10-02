@@ -2,7 +2,30 @@ const { emailCount, emailBrowse, emailSearch, emailGet } = require('./cached-ema
 const viewEmail = require('./email/email-view');
 const config = require('../config.js');
 
+/**
+ * Browsers don't apply the same-origin policy to websockets, so without this check any website could connect and read
+ * the mail. Behind a reverse proxy, `Host` is the upstream address, so `X-Forwarded-Host` is used when set.
+ */
+function isSameOrigin(req) {
+	const origin = req.headers.origin;
+	if (!origin) {
+		// Not a browser.
+		return true;
+	}
+	const host = (req.headers['x-forwarded-host'] || req.headers.host || '').split(',')[0].trim();
+	try {
+		return new URL(origin).host === host;
+	} catch (e) {
+		return false;
+	}
+}
+
 module.exports = (ws, req) => {
+	if (!isSameOrigin(req)) {
+		console.log('Rejected websocket from', req.headers.origin);
+		return ws.close(1008, 'Origin not allowed');
+	}
+
 	const send = (message) => {
 		try {
 			ws.send(JSON.stringify(message));

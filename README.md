@@ -61,8 +61,12 @@ If you want this thing to run behind a reverse proxy (and you should), you can s
     		proxy_http_version 1.1;
     		proxy_set_header Upgrade $http_upgrade;
     		proxy_set_header Connection "Upgrade";
+    		proxy_set_header X-Forwarded-Host $http_host;
     	}
     }
+
+The `X-Forwarded-Host` header is required: the websocket only accepts connections whose `Origin` matches the host
+the app is served from, so that other websites can't read your email through it.
 
 When serving this application from a sub folder (e.g. `/mail` in the above), remember to
 configure `WEB_ROOT` accordingly (e.g. `WEB_ROOT=/mail/`).
