@@ -8,8 +8,10 @@ export default class EmailFrame extends React.Component {
 	componentDidMount() {
 		this.doc = this.iframe.contentDocument;
 
-		// Apparently some emails have embedded scripts...
-		const html = EmailFrame.removeScripts(this.props.email.html);
+		const email = this.props.email;
+		const html = EmailFrame.removeScripts(email.html
+			|| email.textAsHtml
+			|| EmailFrame.preformatted(email.text || ''));
 
 		// shh bby is ok
 		this.doc.open();
@@ -60,6 +62,15 @@ export default class EmailFrame extends React.Component {
 		if (this.resizeObserver) {
 			this.resizeObserver.disconnect();
 		}
+	}
+
+	/**
+	 * Wrap plain text in `<pre>`, escaping any HTML in it.
+	 */
+	static preformatted(text) {
+		const pre = document.createElement('pre');
+		pre.textContent = text;
+		return pre.outerHTML;
 	}
 
 	/**
