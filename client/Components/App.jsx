@@ -22,7 +22,7 @@ export default class App extends React.Component {
 	render() {
 		return (<Router basename={basename}>
 			<header>
-				<h1><Link to="/">Gmvault Browser</Link></h1>
+				<h1><Link to="/"><img src="logo.svg" alt="" />Gmvault</Link></h1>
 				<SearchBar></SearchBar>
 			</header>
 			<div id="container">

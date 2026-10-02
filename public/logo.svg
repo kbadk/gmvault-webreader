@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+	<!-- Gmail-style M envelope in shades of brown, to suggest an archive. -->
+	<defs><clipPath id="envelope"><rect x="8" y="16" width="48" height="34" rx="5"/></clipPath></defs>
+	<rect x="2" y="2" width="60" height="60" rx="12" fill="#e8d6b6"/>
+	<!-- Scaled around the tile's centre: taller, so the M fills more of the tile, and slightly narrower for space at the sides. -->
+	<g clip-path="url(#envelope)" transform="translate(32 32) scale(0.95 1.15) translate(-32 -33)">
+		<rect x="8" y="16" width="10" height="34" fill="#8a6440"/>
+		<rect x="46" y="16" width="10" height="34" fill="#6e4b2a"/>
+		<path d="M8 16l24 18 24-18v11L32 45 8 27z" fill="#b5723a"/>
+		<path d="M8 16l10 7.5v11L8 27z" fill="#9a5a2c"/>
+		<path d="M56 16l-10 7.5v11L56 27z" fill="#d1a15c"/>
+	</g>
+</svg>

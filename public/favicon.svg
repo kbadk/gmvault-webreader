@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+	<!--
+		Gmail-style M envelope in two shades of brown, to suggest an archive, for the browser tab. Straight edges are on
+		multiples of 4, so they fall on whole pixels at 16 and 32 pixels and the icon stays sharp. logo.svg is the larger
+		version.
+	-->
+	<defs><clipPath id="envelope"><rect x="8" y="12" width="48" height="40" rx="4"/></clipPath></defs>
+	<rect width="64" height="64" rx="12" fill="#f4ead8"/>
+	<g clip-path="url(#envelope)">
+		<path d="M8 12l24 18 24-18v16L32 46 8 28z" fill="#b5723a"/>
+		<rect x="8" y="12" width="8" height="40" fill="#6e4b2a"/>
+		<rect x="48" y="12" width="8" height="40" fill="#6e4b2a"/>
+	</g>
+</svg>

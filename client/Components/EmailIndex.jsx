@@ -17,7 +17,9 @@ export default class EmailIndex extends React.Component {
 	}
 
 	render() {
-		document.title = 'Gmvault Browser';
+		// Quoted, to show that it's a search.
+		const query = this.props.match.params.query;
+		document.title = query ? `Gmvault: "${query}"` : 'Gmvault: Inbox';
 
 		const emails = this.state && this.state.emails;
 		if (!emails) {

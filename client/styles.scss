@@ -1,6 +1,7 @@
 $font-stack: 'Helvetica Neue', 'Roboto', sans-serif;
 $primary-color: #222425;
-$primary-background: #eee;
+// Slightly warm grey, for an archive feel. The accent and faded colours below are derived from it.
+$primary-background: #efebe4;
 @use "sass:color";
 $primary-background-accent: color.adjust($primary-background, $lightness: -5%);
 $primary-foreground: #fff;
@@ -33,15 +34,25 @@ button {
 
 header {
 	display: flex;
+	// Centre the title and the search bar on each other. The spacing is on the header, as the h1's default margins
+	// would push the title off centre.
+	align-items: center;
+	margin: 1.4em 0 1em;
 	h1, #SearchBar {
 		display: flex;
-		margin-bottom: 1em;
+		margin: 0;
 	}
 	h1 {
 		padding: 0 .5em;
 		a {
 			color: $primary-color;
 			text-decoration: none;
+			display: flex;
+			align-items: center;
+			gap: .3em;
+		}
+		img {
+			height: 1.2em;
 		}
 	}
 
@@ -57,6 +68,9 @@ header {
 			height: 40px;
 			padding: 4px 8px;
 			border: 0;
+			// Inputs default to `content-box`, which adds the padding to the height and makes the input taller
+			// than the button.
+			box-sizing: border-box;
 		}
 		input[type=text] {
 			opacity: 0.7;
@@ -85,7 +99,13 @@ header {
 }
 
 #container {
-	background: $primary-foreground;
+	// The white boxes holding the email list and an email, with rounded corners. `overflow: hidden` keeps the
+	// hover background of the first and last email inside the corners.
+	#emailListing, #EmailView {
+		background: $primary-foreground;
+		border-radius: 10px;
+		overflow: hidden;
+	}
 
 	#EmailIndex {
 		#actionBar {
@@ -186,6 +206,9 @@ header {
 						color: $primary-color;
 					}
 				}
+			}
+			#date {
+				padding-right: 6px;
 			}
 		}
 		#emailContents {
