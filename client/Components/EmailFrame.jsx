@@ -5,7 +5,13 @@ const CID_LINK = /\bcid:([^'"\s]{1,256})/g;
 
 export default class EmailFrame extends React.Component {
 	render() {
-		return (<iframe id="EmailFrame" ref={iframe => this.iframe = iframe}/>);
+		// No `allow-scripts`, so nothing in the email can run, whatever gets past `removeScripts`. `allow-same-origin`
+		// lets us write the email into the frame and size it. Links open in a new tab, outside the sandbox.
+		return (<iframe
+			id="EmailFrame"
+			sandbox="allow-same-origin allow-popups allow-popups-to-escape-sandbox"
+			ref={iframe => this.iframe = iframe}
+		/>);
 	}
 
 	componentDidMount() {
@@ -24,7 +30,8 @@ export default class EmailFrame extends React.Component {
 		// email's `height: 100%` from following it, and padding replaces the default margin, which `flow-root` keeps
 		// child margins inside of.
 		this.doc.head.insertAdjacentHTML('afterbegin',
-			`<style>
+			`<base target="_blank">
+			<style>
 				html, body {
 					height: auto !important;
 					min-height: 0 !important;

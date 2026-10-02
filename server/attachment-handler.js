@@ -48,6 +48,11 @@ module.exports = async (req, res) => {
 		res.set('Content-Disposition', res.get('Content-Disposition').replace(/^attachment/, 'inline'));
 	}
 	res.set('X-Content-Type-Options', 'nosniff');
+	// Treat the attachment as an untrusted document with no scripts and a unique origin, should a browser ever render
+	// one that isn't in `INLINE_TYPES`. Chromium refuses to show PDFs in a sandbox, so they're left out.
+	if (contentType !== 'application/pdf') {
+		res.set('Content-Security-Policy', 'sandbox');
+	}
 	res.type(charset && contentType.startsWith('text/') ? `${contentType}; charset=${charset}` : contentType);
 	res.send(attachment.content);
 };
