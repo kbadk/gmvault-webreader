@@ -3,6 +3,7 @@ const { readFileSync } = require('fs');
 const express = require('express');
 const expressWs = require('express-ws');
 const websocketHandler = require('./websocket-handler');
+const attachmentHandler = require('./attachment-handler');
 
 const config = require('../config.js');
 
@@ -13,6 +14,8 @@ const app = express();
 expressWs(app);
 
 app.use(config.webRoot, express.static('public'));
+
+app.get(`${config.webRoot}attachment/:dir/:file/:index`, attachmentHandler);
 
 app.get('*', (req, res, next) => {
 	if (req.url.endsWith('.websocket')) {

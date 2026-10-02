@@ -149,6 +149,13 @@ header {
 				display: flex;
 				justify-content: flex-end;
 				min-width: 3.5em;
+				.attachmentHover {
+					display: flex;
+				}
+				.attachmentIcon {
+					fill: $primary-color-faded;
+					margin-right: .25em;
+				}
 			}
 		}
 	}
@@ -187,6 +194,48 @@ header {
 		#error {
 			padding: 1em;
 			color: $primary-color-faded;
+		}
+		#attachments {
+			border-top: 1px solid $primary-background;
+			display: flex;
+			flex-wrap: wrap;
+			gap: 0 2em;
+			> div {
+				flex: 0 1 300px;
+				min-width: 0;
+			}
+			h3 {
+				font-size: 100%;
+				font-weight: bold;
+				margin: .75em 0 .25em;
+			}
+			ul {
+				margin: 0;
+				padding: 0;
+				list-style: none;
+			}
+			li {
+				display: flex;
+				gap: .4em;
+				a {
+					display: flex;
+					min-width: 0;
+					white-space: nowrap;
+					span:first-child {
+						overflow: hidden;
+						text-overflow: ellipsis;
+						// The ellipsis is only underlined if the span has the underline itself, not just the link.
+						text-decoration: inherit;
+					}
+					span:last-child {
+						flex-shrink: 0;
+					}
+				}
+				.size {
+					color: $primary-color-faded;
+					flex-shrink: 0;
+				}
+			}
 		}
 	}
 

@@ -1,8 +1,5 @@
-const cacher = require('./cacher');
-const emailCount = cacher(require('./email/email-count'), { ttl: 60 });
-const emailBrowse = cacher(require('./email/email-browse'), { ttl: 30 });
-const emailSearch = cacher(require('./email/email-search'), { ttl: 30 });
-const emailGet = cacher(require('./email/email-get'));
+const { emailCount, emailBrowse, emailSearch, emailGet } = require('./cached-email');
+const viewEmail = require('./email/email-view');
 const config = require('../config.js');
 
 module.exports = (ws, req) => {
@@ -48,8 +45,8 @@ module.exports = (ws, req) => {
 			}
 
 			case 'get': {
-				const result = await emailGet(config.mailRoot, payload.filePath);
-				reply(result);
+				const email = await emailGet(config.mailRoot, payload.filePath);
+				reply(viewEmail(email));
 				break;
 			}
 

@@ -1,5 +1,8 @@
 import React from 'react';
 
+// Same pattern mailparser (and server/email/email-attachments.js) uses to find `cid:` links.
+const CID_LINK = /\bcid:([^'"\s]{1,256})/g;
+
 export default class EmailFrame extends React.Component {
 	render() {
 		return (<iframe id="EmailFrame" ref={iframe => this.iframe = iframe}/>);
@@ -10,8 +13,8 @@ export default class EmailFrame extends React.Component {
 
 		const email = this.props.email;
 		const html = EmailFrame.removeScripts(email.html
-			|| email.textAsHtml
-			|| EmailFrame.preformatted(email.text || ''));
+			? EmailFrame.resolveCidLinks(email, this.props.emailPath)
+			: email.textAsHtml || EmailFrame.preformatted(email.text || ''));
 
 		// shh bby is ok
 		this.doc.open();
@@ -71,6 +74,17 @@ export default class EmailFrame extends React.Component {
 		const pre = document.createElement('pre');
 		pre.textContent = text;
 		return pre.outerHTML;
+	}
+
+	/**
+	 * Point `cid:` links at the attachment route. The URLs are absolute, because the HTML may have its own `<base>`
+	 * element, and the iframe doesn't inherit ours.
+	 */
+	static resolveCidLinks(email, emailPath) {
+		const indexByCid = new Map(email.attachments.map((attachment, index) => [attachment.cid, index]));
+		return email.html.replace(CID_LINK, (link, cid) => indexByCid.has(cid)
+			? new URL(`attachment/${emailPath}/${indexByCid.get(cid)}`, document.baseURI).href
+			: link);
 	}
 
 	/**
