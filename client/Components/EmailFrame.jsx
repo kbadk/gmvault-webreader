@@ -13,19 +13,39 @@ export default class EmailFrame extends React.Component {
 
 		// shh bby is ok
 		this.doc.open();
-		this.doc.write(html);
+		this.doc.write('<!DOCTYPE html>' + html);
 		this.doc.close();
+		// The frame is sized to the body, so the body's height mustn't depend on the frame's: `height: auto` stops an
+		// email's `height: 100%` from following it, and padding replaces the default margin, which `flow-root` keeps
+		// child margins inside of.
 		this.doc.head.insertAdjacentHTML('afterbegin',
-			`<style>body {
-				background: #fff;
-				font-family: sans-serif;
-			}
-		</style>`);
+			`<style>
+				html, body {
+					height: auto !important;
+					min-height: 0 !important;
+				}
+				body {
+					margin: 0 !important;
+					padding: 8px;
+					display: flow-root;
+					background: #fff;
+					font-family: sans-serif;
+				}
+			</style>`);
 
-		const resizeObserver = new ResizeObserver((objs) =>
-			objs.forEach(() => {
-				this.iframe.style.height = this.doc.body.scrollHeight + 'px';
-			}));
+		// Emails sized in `vh` can still grow the frame on every resize, so stop following them if they do.
+		const resizes = [];
+		const resizeObserver = new ResizeObserver(() => {
+			const now = Date.now();
+			resizes.push(now);
+			while (resizes[0] < now - 1000) {
+				resizes.shift();
+			}
+			if (resizes.length > 30) {
+				return resizeObserver.disconnect();
+			}
+			this.iframe.style.height = this.doc.body.scrollHeight + 'px';
+		});
 		resizeObserver.observe(this.doc.body);
 
 		// #EmailFrame initiallty has `opacity: 0` defined in the SCSS.
